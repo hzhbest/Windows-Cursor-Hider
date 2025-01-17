@@ -36,7 +36,7 @@ return
 
 ; Hides the mouse cursor
 Hoty:
-if (GetKeyState("CTRL") || GetKeyState("ALT") || GetKeyState("WIN")) {
+if (GetKeyState("CTRL") || GetKeyState("ALT") || GetKeyState("LWIN") || GetKeyState("RWIN")) {
     return    ;skip hiding when modifier key(s) pressed
 }
 SystemCursor("Off")
