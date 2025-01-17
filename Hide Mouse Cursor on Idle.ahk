@@ -36,7 +36,10 @@ return
 
 ; Hides the mouse cursor
 Hoty:
-   SystemCursor("Off")
+if (GetKeyState("CTRL") || GetKeyState("ALT") || GetKeyState("WIN")) {
+    return    ;skip hiding when modifier key(s) pressed
+}
+SystemCursor("Off")
 return
 
 ; Ensure the cursor is made visible when the script exits.
