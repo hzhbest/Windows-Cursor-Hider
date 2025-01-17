@@ -13,4 +13,5 @@ This is a small script written and compiled using AutoHotKey that hides the wind
 
 
 Forked from https://github.com/Stefan-Z-Camilleri-zz/Windows-Cursor-Hider
+
 Add modifier keys exception.
