@@ -2,8 +2,11 @@ Windows Cursor Hider
 ====================
 
 *Hide Mouse Cursor on Idle.ahk*
+
 *Hide mouse cursor when typing, and show it back when moving mouse.*
+
 *Forked from https://github.com/Stefan-Z-Camilleri-zz/Windows-Cursor-Hider*
+
 hzhbest -- Add modifier keys exception, .
 
 ====================
