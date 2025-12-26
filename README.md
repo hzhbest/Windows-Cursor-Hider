@@ -1,17 +1,18 @@
 Windows Cursor Hider
 ====================
 
-Although Windows already has an option to hide the mouse cursor whilst typing, which can be found under Control Panel/Mouse, this is respected on a 'per application' basis.
+*Hide Mouse Cursor on Idle.ahk*
+*Hide mouse cursor when typing, and show it back when moving mouse.*
+*Forked from https://github.com/Stefan-Z-Camilleri-zz/Windows-Cursor-Hider*
+hzhbest -- Add modifier keys exception, .
 
-Unfortunately, many applications, such as Visual Studio, do not respect this setting, and leave the mouse cursor visible whilst typing.
+====================
+【重构版】 打字隐藏鼠标指针.ahk
+====================
 
-This can be quite annoying, as one tends to type exactly where one clicked, i.e., where the mouse cursor currently is, and especially in the case of developers, the IDE is particularly rich, meaning that the mouse cursor will normally also activate tooltips related to the item they are hovering over.
-
-This is a small script written and compiled using AutoHotKey that hides the windows cursor when a user starts typing any alphanumeric (and certain coding-related) characters except when pressing shortcut key combination with Ctrl, Alt and Win modifier keys, and shows it again as soon as a mouse movement is detected.
-
-
-
-
-Forked from https://github.com/Stefan-Z-Camilleri-zz/Windows-Cursor-Hider
-
-Add modifier keys exception.
+重构版，（以原版脚本为基础？）结合微软资料（winuser.h相关）和AI（Hunyuan & Gemini）重新编写的脚本，使用句柄取代简单图像提取，实现功能：
+- 打字时隐藏鼠标指针（cursor）（原版功能）
+- 忽略修饰键如 Ctrl 、 Alt 、Win 键（修改版功能）
+- 鼠标指针隐藏和恢复时显示小提示
+- 可恢复原动画指针（修复原版bug）
+- 可通过托盘菜单禁用
