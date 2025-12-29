@@ -1,9 +1,11 @@
-﻿; ==================================================
-; 系统光标隐藏与恢复脚本（无外部文件，内存创建透明光标）
+; ==================================================
+; 鼠标指针隐藏与恢复脚本（无外部文件，内存创建透明光标）
 ; + 托盘菜单开关（启用/禁用功能）
 ; 触发：主键盘字符键按下（字母、数字、符号键，允许Shift，不含Ctrl/Alt/Win）
 ; 恢复：鼠标移动超过阈值（10像素）
-; 仅针对系统光标，忽略其他程序自定义光标
+; 仅针对系统鼠标指针，忽略其他程序自定义鼠标指针
+; v 1.00 2025-12-26；重构初版
+; v 1.01 2025-12-29；修正文字术语，修复托盘工具提示不切换bug
 ; ==================================================
 
 #NoEnv
@@ -12,9 +14,9 @@ SetBatchLines, -1
 
 ; --- 配置 ---
 threshold := 10          ; 鼠标移动恢复阈值（像素）
-enabled := true          ; 初始启用光标隐藏功能
+enabled := true          ; 初始启用鼠标指针隐藏功能
 
-; --- 系统光标槽 OCR 常量（十进制）---
+; --- 系统鼠标指针槽 OCR 常量（十进制）---
 global CursorIDs := "32512,32513,32514,32515,32516,32642,32643,32644,32645,32646,32648,32649,32650"
 global OriginalHandles := {}
 
@@ -51,22 +53,22 @@ Menu, Tray, Add, 切换光标隐藏, ToggleEnabled
 Menu, Tray, Add, 退出, ExitScript
 
 ; 初始化托盘提示文字
-UpdateTrayTip()
+statustxt:="启用"
+UpdateTrayTip(statustxt)
 
 Menu, Tray, Icon
 return
 
-UpdateTrayTip() {
-    statusText := enabled ? "启用" : "禁用"
-    Menu, Tray, Tip, 系统光标隐藏脚本`n状态: %statusText%
+UpdateTrayTip(statustxt) {
+    Menu, Tray, Tip, 打字隐藏鼠标指针`n当前状态: %statustxt%隐藏
 }
 
 ToggleEnabled:
 enabled := !enabled
-UpdateTrayTip()
 ; 先准备 ToolTip 文本
 newStatus := enabled ? "启用" : "禁用"
-ToolTip, 光标隐藏功能已%newStatus%
+ToolTip, 已%newStatus%指针隐藏功能
+UpdateTrayTip(newStatus)
 SetTimer, RemoveToolTip, 1500
 return
 
@@ -93,7 +95,7 @@ if (mods.Ctrl || mods.Alt || mods.Win)
 HideCursors()
 cursor_hidden := true
 MouseGetPos, hiddenX, hiddenY
-ToolTip, 光标已隐藏
+ToolTip, 鼠标指针已隐藏
 SetTimer, RemoveToolTip, 1000
 return
 
@@ -110,7 +112,7 @@ dy := curY - hiddenY
 if (Abs(dx) > threshold || Abs(dy) > threshold) {
     RestoreCursors()
     cursor_hidden := false
-    ToolTip, 光标已恢复
+    ToolTip, 鼠标指针已恢复
     SetTimer, RemoveToolTip, 1000
 }
 return
