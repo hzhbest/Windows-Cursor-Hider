@@ -6,6 +6,7 @@
 ; 仅针对系统鼠标指针，忽略其他程序自定义鼠标指针
 ; v 1.00 2025-12-26；重构初版
 ; v 1.01 2025-12-29；修正文字术语，修复托盘工具提示不切换bug
+; v 1.02 2026-01-04；增加隐藏／恢复显示指针的工具提示启用设置和菜单项
 ; ==================================================
 
 #NoEnv
@@ -15,6 +16,7 @@ SetBatchLines, -1
 ; --- 配置 ---
 threshold := 10          ; 鼠标移动恢复阈值（像素）
 enabled := true          ; 初始启用鼠标指针隐藏功能
+showtip := true          ; 初始启用鼠标指针隐藏提示
 
 ; --- 系统鼠标指针槽 OCR 常量（十进制）---
 global CursorIDs := "32512,32513,32514,32515,32516,32642,32643,32644,32645,32646,32648,32649,32650"
@@ -49,7 +51,8 @@ SetTimer, CheckMouseMove, 50
 
 ; === 托盘菜单 ===
 Menu, Tray, NoStandard
-Menu, Tray, Add, 切换光标隐藏, ToggleEnabled
+Menu, Tray, Add, 切换光标自动隐藏, ToggleEnabled
+Menu, Tray, Add, 切换光标隐藏提示, ToggleTooltip
 Menu, Tray, Add, 退出, ExitScript
 
 ; 初始化托盘提示文字
@@ -69,6 +72,13 @@ enabled := !enabled
 newStatus := enabled ? "启用" : "禁用"
 ToolTip, 已%newStatus%指针隐藏功能
 UpdateTrayTip(newStatus)
+SetTimer, RemoveToolTip, 1500
+return
+
+ToggleTooltip:
+showtip := !showtip
+newStatus := showtip ? "启用" : "禁用"
+ToolTip, 已%newStatus%指针隐藏提示
 SetTimer, RemoveToolTip, 1500
 return
 
@@ -95,8 +105,10 @@ if (mods.Ctrl || mods.Alt || mods.Win)
 HideCursors()
 cursor_hidden := true
 MouseGetPos, hiddenX, hiddenY
-ToolTip, 鼠标指针已隐藏
-SetTimer, RemoveToolTip, 1000
+if (showtip) {
+    ToolTip, 鼠标指针已隐藏
+    SetTimer, RemoveToolTip, 1000
+}
 return
 
 ; --------------------------------------------------
@@ -112,8 +124,10 @@ dy := curY - hiddenY
 if (Abs(dx) > threshold || Abs(dy) > threshold) {
     RestoreCursors()
     cursor_hidden := false
-    ToolTip, 鼠标指针已恢复
-    SetTimer, RemoveToolTip, 1000
+    if (showtip){
+        ToolTip, 鼠标指针已恢复
+        SetTimer, RemoveToolTip, 1000
+    }
 }
 return
 
